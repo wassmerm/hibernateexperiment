@@ -1,5 +1,7 @@
 package com.wassmer.hibernateexperiment;
 
+import com.wassmer.hibernateexperiment.dao.StudentDAO;
+import com.wassmer.hibernateexperiment.entity.Student;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,10 +15,20 @@ public class HibernateexperimentApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(String[] args) {
+	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
-			System.out.println("Hello world");
+			createStudent(studentDAO);
 		};
+	}
+
+	private void createStudent(StudentDAO studentDAO) {
+		System.out.println("Creating new student object...");
+		Student tempStudent = new Student("Frank", "Miller", "frank.miller@outlook.com");
+
+		System.out.println("Saving student object to DB...");
+		studentDAO.save(tempStudent);
+
+		System.out.println("Student object saved. Generated ID: " + tempStudent.getId());
 	}
 
 }
